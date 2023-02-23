@@ -1,60 +1,88 @@
 let userSelection;
 let computerSelection;
 
-const options = ["rock","scissors","paper"];
-const resultMatrix = [["0","U","C"],["C","0","U"],["U","C","0"]];
+const weapon = ["rock","scissors","paper"];
+const resultMatrix = [["even","user","computer"],["computer","even","user"],["user","computer","even"]];
 let userScore = 0;
 let computerScore = 0;
+let evenScore = 0;
 
-function playRound(player, computer) {
-    let result = resultMatrix[options.indexOf(player)][options.indexOf(computer)];
+const userResult = document.querySelector("#result #user span");
+const computerResult = document.querySelector("#result #computer span");
+const evenResult = document.querySelector("#result #even span");
+
+// function playRound(player, computer) {
+//     let result = resultMatrix[weapon.indexOf(player)][weapon.indexOf(computer)];
+//     switch (result) {
+//         case "0":
+//             return "Round even! Nobody wins this round.";
+//             break;
+//         case "C":
+//             ++computerScore;
+//             return "Computer wins this round!"
+//             break;
+//         case "U":
+//             ++userScore;
+//             return "User wins this round!"
+//             break;
+//         default:
+//             break;
+//     }
+// }
+
+function getComputerChoice() {
+    return weapon[Math.floor(Math.random() * 3)];
+}
+
+function playRound(e) {
+    userSelection =  this.getAttribute("data-weapon");
+    computerSelection = getComputerChoice();
+    updateScore(userSelection,computerSelection);    
+    checkGame();
+}
+
+function checkGame() {
+    if (computerScore !== 5 && userScore !== 5) return;
+    (computerScore === 5) ? declareWinner("Computer") : declareWinner("User");
+    restart();
+}
+
+function updateScore() {
+    let result = resultMatrix[weapon.indexOf(userSelection)][weapon.indexOf(computerSelection)];
     switch (result) {
-        case "0":
-            return "Round even! Nobody wins this round.";
+        case "even":
+            console.log("Round even! Nobody wins this round.");
+            evenResult.textContent = ++evenScore;
             break;
-        case "C":
-            ++computerScore;
-            return "Computer wins this round!"
+        case "computer":
+            console.log("Computer wins this round!");
+            computerResult.textContent = ++computerScore;
             break;
-        case "U":
-            ++userScore;
-            return "User wins this round!"
+        case "user":
+            userResult.textContent = ++userScore;
+            console.log("User wins this round!");
             break;
         default:
             break;
     }
 }
 
-function getComputerChoice() {
-    return options[Math.floor(Math.random() * 3)];
+function declareWinner(winner) {
+    alert(winner + " Wins!");
 }
 
-function getUserChoice() {
-    let input;
-    while (true) {
-        input = prompt("Choose your weapon (Rock / Paper / Scissors)!").trim().toLowerCase();
-        if (options.includes(input)) {
-            return input; console.log("NO");
-        } else {
-            alert("Invalid input! Please try again.");
-        }
-    }
+function restart() {
+    userScore = 0;
+    computerScore = 0;
+    evenScore = 0;
+    userResult.textContent = 0;
+    computerResult.textContent = 0;
+    evenResult.textContent = 0;
 }
 
-function game() {
-    for (let i = 1; i <= 5; i++) {
-        userSelection = getUserChoice();
-        computerSelection = getComputerChoice();
-        console.log(playRound(userSelection, computerSelection));
-    }
+buttons = document.querySelectorAll(".weapon");
+buttons.forEach(button => {
+    button.addEventListener('click', playRound)
+})
 
-    if (userScore === computerScore) {
-        console.log("Game result is even, no winner!")
-    } else if (userScore > computerScore) {
-        console.log("User wins the game!")
-    } else {
-        console.log("computer wins the game!")
-    }
-}
-
-game();
+restart();

@@ -5,6 +5,23 @@
   <title>Page Title</title>
 </head>
 <body>
-  <script src="game.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="styles/style.css">
+  <script src="game.js" type="text/javascript" defer></script>
+  <div id="title">
+    <h1>Rock, paper, scissors</h1>
+  </div>
+  <div class="game-container">
+    <div class="buttons">
+      <button class="weapon" data-weapon="rock">Rock</button>
+      <button class="weapon" data-weapon="scissors">Scissors</button>
+      <button class="weapon" data-weapon="paper">Paper</button>
+    </div>
+    <div id="result">
+      <div id="user">User wins: <span></span></div>
+      <div id="computer">Computer wins: <span></span></div>
+      <div id="even">Even: <span></span></div>
+    </div>
+  </div>
+  
 </body>
 </html>
